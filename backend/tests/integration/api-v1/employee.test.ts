@@ -6,6 +6,8 @@ import setUpTestDb from '../../utils/setupTestDb';
 import mongoose from 'mongoose';
 import Employee from '../../../src/api/v1/employee/employee.model';
 import Department from '../../../src/api/v1/department/department.model';
+import dayjs from 'dayjs';
+import Shift from '../../../src/api/v1/shift/shift.model';
 
 setUpTestDb();
 
@@ -41,8 +43,8 @@ describe('Employee API', () => {
       expect(resp.body.employees).toBeDefined();
     });
 
-    it('should return 401 without token', async () => {
-      await request(app).get('/api/v1/employees').expect(401);
+    it('should return 403 without token', async () => {
+      await request(app).get('/api/v1/employees').expect(403);
     });
   });
 
@@ -77,11 +79,11 @@ describe('Employee API', () => {
       }
     });
 
-    it('should return 401 without token', async () => {
+    it('should return 403 without token', async () => {
       await request(app)
         .post('/api/v1/employees')
         .send(employeeData)
-        .expect(401);
+        .expect(403);
     });
 
     it('should return 400 if firstName is not provided', async () => {
@@ -273,8 +275,8 @@ describe('Employee API', () => {
       );
     });
 
-    it('should return 401 without token', async () => {
-      await request(app).get(`/api/v1/employees/${employeeId}`).expect(401);
+    it('should return 403 without token', async () => {
+      await request(app).get(`/api/v1/employees/${employeeId}`).expect(403);
     });
 
     it('should return 400 if id is not a valid id', async () => {
@@ -344,11 +346,11 @@ describe('Employee API', () => {
       );
     });
 
-    it('should return 401 without token', async () => {
+    it('should return 403 without token', async () => {
       await request(app)
         .put(`/api/v1/employees/${employeeId}`)
         .send({ name: 'Updated Employee' })
-        .expect(401);
+        .expect(403);
     });
 
     it('should return 400 if id is not a valid id', async () => {
@@ -538,8 +540,8 @@ describe('Employee API', () => {
       expect(afterDeleteDepartment?.employees.length).toEqual(0);
     });
 
-    it('should return 401 without token', async () => {
-      await request(app).delete(`/api/v1/employees/${employeeId}`).expect(401);
+    it('should return 403 without token', async () => {
+      await request(app).delete(`/api/v1/employees/${employeeId}`).expect(403);
     });
 
     it('should return 400 if id is not a valid id', async () => {
@@ -558,6 +560,58 @@ describe('Employee API', () => {
         .expect(404);
 
       expect(resp.body.error.message).toEqual('Employee not found');
+    });
+
+    it('should also delete the employee from its shifts', async () => {
+      const shiftDate = dayjs(faker.date.past()).toISOString();
+      const shiftData = {
+        date: shiftDate,
+        startTime: dayjs(shiftDate).add(1, 'hour'),
+        endTime: dayjs(shiftDate).add(2, 'hour'),
+      };
+      const shift = await Shift.create(shiftData);
+
+      await request(app)
+        .put(`/api/v1/shifts/${shift._id}`)
+        .set('Authorization', `Bearer ${accessToken}`)
+        .send({ employees: [employeeId] });
+
+      const preDeleteDBShift = await Shift.findById(shift._id);
+
+      expect(preDeleteDBShift?.employees.length).toEqual(1);
+      expect(preDeleteDBShift?.employees[0].toString()).toEqual(employeeId);
+
+      await request(app)
+        .delete(`/api/v1/employees/${employeeId}`)
+        .set('Authorization', `Bearer ${accessToken}`)
+        .expect(204);
+
+      const afterDeleteDBShift = await Shift.findById(shift._id);
+
+      expect(afterDeleteDBShift?.employees.length).toEqual(0);
+    });
+
+    it('should delete the employee from department manager', async () => {
+      const department1Data = {
+        name: 'Department1',
+        manager: employeeId,
+      };
+      const department1 = await Department.create(department1Data);
+
+      const preDeleteDBDepartment = await Department.findById(department1._id);
+
+      expect(preDeleteDBDepartment?.manager.toString()).toEqual(employeeId);
+
+      await request(app)
+        .delete(`/api/v1/employees/${employeeId}`)
+        .set('Authorization', `Bearer ${accessToken}`)
+        .expect(204);
+
+      const afterDeleteDBDepartment = await Department.findById(
+        department1._id,
+      );
+
+      expect(afterDeleteDBDepartment?.manager).toBeNull();
     });
   });
 });

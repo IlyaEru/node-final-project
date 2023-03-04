@@ -11,6 +11,7 @@ specifiers:
   '@typescript-eslint/eslint-plugin': ^5.52.0
   '@typescript-eslint/parser': ^5.52.0
   concurrently: ^7.6.0
+  dayjs: ^1.11.7
   errors@latest: link:eslint-plugin-plugin:import/errors@latest
   eslint: ^8.34.0
   eslint-plugin-flowtype: ^8.0.3
@@ -31,6 +32,7 @@ specifiers:
 
 dependencies:
   '@joi/date': 2.1.0
+  dayjs: 1.11.7
   eslint-plugin-flowtype: 8.0.3_eslint@8.34.0
   eslint-plugin-import: 2.27.5_mcvs2y73sfmcxqzpjj5lr7a2m4
   eslint-plugin-jsx-a11y: 6.7.1_eslint@8.34.0
@@ -2382,6 +2384,10 @@ packages:
     resolution: {integrity: sha512-dDCnyH2WnnKusqvZZ6+jA1O51Ibt8ZMRNkDZdyAyK4YfbDwa/cEmuztzG5pk6hqlp9aSBPYcjOlktquahGwGeA==}
     engines: {node: '>=0.11'}
     dev: true
+
+  /dayjs/1.11.7:
+    resolution: {integrity: sha512-+Yw9U6YO5TQohxLcIkrXBeY73WP3ejHWVvx8XCk3gxvQDCTEmS48ZrSZCKciI7Bhl/uCMyxYtE9UqRILmFphkQ==}
+    dev: false
 
   /debug/3.2.7:
     resolution: {integrity: sha512-CFjzYYAi4ThfiQvizrFQevTTXHtnCqWfe7x1AhgEscTz6ZbLbfoLRLPugTQyBth6f8ZERVUSyWHFD/7Wu4t1XQ==}

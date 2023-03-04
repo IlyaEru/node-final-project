@@ -15,6 +15,12 @@ const shiftSchema = new mongoose.Schema(
       type: Date,
       required: true,
     },
+    employees: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Employee',
+      },
+    ],
   },
   {
     versionKey: false,

@@ -5,6 +5,7 @@ import jsonfile from 'jsonfile';
 import User from '../../api/v1/user/user.model';
 import { ApiError } from '../error';
 import { Action, ActionsData } from './actions.type';
+import mongoose from 'mongoose';
 
 const environment = process.env.NODE_ENV || 'development';
 const actionsDataFile =
@@ -23,7 +24,9 @@ const getActions = async (): Promise<ActionsData> => {
   }
 };
 
-const getActionsByUserId = async (userId: string): Promise<ActionsData> => {
+const getActionsByUserId = async (
+  userId: string | mongoose.Types.ObjectId,
+): Promise<ActionsData> => {
   try {
     const actions = await getActions();
     const userActions = actions.actions.filter(
@@ -35,7 +38,9 @@ const getActionsByUserId = async (userId: string): Promise<ActionsData> => {
   }
 };
 
-const getUserLeftActions = async (userId: string): Promise<number> => {
+const getUserLeftActions = async (
+  userId: string | mongoose.Types.ObjectId,
+): Promise<number> => {
   const usersActions = await getActionsByUserId(userId);
   const today = dayjs().format('YYYY-MM-DD');
   const userActionsToday = usersActions.actions.filter(
@@ -59,7 +64,7 @@ const addAction = async (userId: string): Promise<void> => {
   const userMaxActions = user.maxActions;
   const date = dayjs().format('YYYY-MM-DD');
   const id = uuidv4();
-  const actionLeft = await getUserLeftActions(userId);
+  const actionLeft = (await getUserLeftActions(userId)) - 1;
   const newAction: Action = { id, userId, userMaxActions, date, actionLeft };
   const actions = await getActions();
 

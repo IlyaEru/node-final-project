@@ -12,13 +12,14 @@ export const actionsMiddleware = async (
   if (!req.user) {
     return next(new ApiError(httpStatus.UNAUTHORIZED, 'Unauthorized'));
   }
-
   const user = req.user as IUser;
   const userActionsLeft = await getUserLeftActions(user._id.toString());
-  res.set('X-User-Actions-Left', userActionsLeft.toString());
-
+  res.set('X-User-Actions-Left', (userActionsLeft - 1).toString());
+  res.set('Access-Control-Expose-Headers', 'X-User-Actions-Left');
   if (userActionsLeft <= 0) {
-    return next(new ApiError(httpStatus.FORBIDDEN, 'Max actions reached'));
+    return next(
+      new ApiError(httpStatus.FORBIDDEN, 'Max actions reached for today'),
+    );
   }
 
   addAction(user._id.toString());

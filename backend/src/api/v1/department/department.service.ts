@@ -7,24 +7,38 @@ const moveEmployeesToNewDepartment = async (
   employees: string[],
   departmentId: string,
 ) => {
-  employees.forEach(async (employeeId: string) => {
-    const employee = await Employee.findById(employeeId);
-    if (!employee) {
-      throw new ApiError(httpStatus.NOT_FOUND, 'Employee not found');
-    }
-    if (employee.department === departmentId) {
-      return;
-    }
-    if (!employee.department || employee.department !== departmentId) {
-      try {
-        await Employee.findByIdAndUpdate(employeeId, {
-          department: departmentId,
-        });
-      } catch (error: any) {
-        throw new ApiError(httpStatus.NOT_FOUND, 'Department not found');
+  for (const employeeId of employees) {
+    try {
+      const employee = await Employee.findById(employeeId);
+
+      if (!employee) {
+        return;
       }
+
+      if (employee.department === departmentId) {
+        continue;
+      }
+
+      const employeeDepartments = await Department.find({
+        employees: { $in: [employeeId] },
+        _id: { $ne: departmentId },
+      });
+
+      if (employeeDepartments.length > 0) {
+        for (const employeeDepartment of employeeDepartments) {
+          await Department.findByIdAndUpdate(employeeDepartment, {
+            $pull: { employees: employeeId },
+          });
+        }
+      }
+
+      await Employee.findByIdAndUpdate(employeeId, {
+        department: departmentId,
+      });
+    } catch (error: any) {
+      console.log(error);
     }
-  });
+  }
 };
 
 export default {

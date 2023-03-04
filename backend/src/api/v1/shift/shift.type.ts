@@ -6,3 +6,10 @@ export interface IShift {
   startTime: Date;
   endTime: Date;
 }
+
+export interface createShiftPayload {
+  date: Date;
+  startTime: Date;
+  endTime: Date;
+  employees?: string[];
+}

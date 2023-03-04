@@ -41,8 +41,8 @@ describe('Shift API', () => {
       expect(resp.body.shifts).toBeDefined();
     });
 
-    it('should return 401 without token', async () => {
-      await request(app).get('/api/v1/shifts').expect(401);
+    it('should return 403 without token', async () => {
+      await request(app).get('/api/v1/shifts').expect(403);
     });
   });
 
@@ -69,8 +69,8 @@ describe('Shift API', () => {
       expect(dbShift).toBeDefined();
     });
 
-    it('should return 401 without token', async () => {
-      await request(app).post('/api/v1/shifts').send(shiftData).expect(401);
+    it('should return 403 without token', async () => {
+      await request(app).post('/api/v1/shifts').send(shiftData).expect(403);
     });
 
     it('should return 400 if date is not provided', async () => {
@@ -196,8 +196,8 @@ describe('Shift API', () => {
       expect(resp.body.shift.endTime).toEqual(shiftData.endTime.toISOString());
     });
 
-    it('should return 401 without token', async () => {
-      await request(app).get(`/api/v1/shifts/${shiftId}`).expect(401);
+    it('should return 403 without token', async () => {
+      await request(app).get(`/api/v1/shifts/${shiftId}`).expect(403);
     });
 
     it('should return 400 if id is not a valid id', async () => {
@@ -257,11 +257,11 @@ describe('Shift API', () => {
         '2020-11-11T00:00:00.000Z',
       );
     });
-    it('should return 401 without token', async () => {
+    it('should return 403 without token', async () => {
       await request(app)
         .put(`/api/v1/shifts/${shiftId}`)
         .send({ date: '2020-11-11' })
-        .expect(401);
+        .expect(403);
     });
 
     it('should return 400 if id is not a valid id', async () => {

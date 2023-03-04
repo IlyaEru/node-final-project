@@ -1,9 +1,10 @@
 import express from 'express';
 import helmet from 'helmet';
+import morgan from './modules/logger/morgan';
 import xss from 'xss-clean';
 import ExpressMongoSanitize from 'express-mongo-sanitize';
 import compression from 'compression';
-// import cors from 'cors';
+import cors from 'cors';
 import dotenv from 'dotenv';
 import passport from 'passport';
 import httpStatus from 'http-status';
@@ -12,22 +13,23 @@ import { ApiError, ApiErrorHandler } from './modules/error';
 import v1Routes from './routes/v1';
 import { jwtStrategy } from './api/v1/auth';
 
-const app = express();
-
 // load env vars
 dotenv.config();
+
+const app = express();
+
+const environment = process.env.NODE_ENV || 'development';
+
+if (environment !== 'test') {
+  app.use(morgan.successHandler);
+  app.use(morgan.errorHandler);
+}
 
 // set security HTTP headers
 app.use(helmet());
 
-/*
- Usually enable cors, but for this project, 
- we don't need it because we are using the 
- same domain for both frontend and backend
-*/
-
-// app.use(cors());
-// app.options('*', cors());
+app.use(cors());
+app.options('*', cors());
 
 // parse json request body
 app.use(express.json());

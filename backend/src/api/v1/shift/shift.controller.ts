@@ -3,6 +3,7 @@ import httpStatus from 'http-status';
 import { ApiError } from '../../../modules/error';
 
 import Shift from './shift.model';
+import { createShiftPayload } from './shift.type';
 
 const getShifts = async (req: Request, res: Response) => {
   const shifts = await Shift.find({});
@@ -20,15 +21,23 @@ const getShift = async (req: Request, res: Response, next: NextFunction) => {
 };
 
 const createShift = async (req: Request, res: Response) => {
-  const { date, startTime, endTime } = req.body;
-  const shift = await Shift.create({ date, startTime, endTime });
+  const { date, startTime, endTime, employees } = req.body;
+  const createPayload: createShiftPayload = {
+    date,
+    startTime,
+    endTime,
+  };
+  if (employees) {
+    createPayload.employees = employees;
+  }
+  const shift = await Shift.create(createPayload);
 
   res.status(201).json({ shift });
 };
 
 const updateShift = async (req: Request, res: Response, next: NextFunction) => {
   const { id } = req.params;
-  const { date, startTime, endTime } = req.body;
+  const { date, startTime, endTime, employees } = req.body;
   const updateFields = {} as any;
   if (date) {
     updateFields.date = date;
@@ -38,6 +47,9 @@ const updateShift = async (req: Request, res: Response, next: NextFunction) => {
   }
   if (endTime) {
     updateFields.endTime = endTime;
+  }
+  if (employees) {
+    updateFields.employees = employees;
   }
   const shift = await Shift.findById(id);
   if (!shift) {

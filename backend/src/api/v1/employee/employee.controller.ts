@@ -37,7 +37,8 @@ const updateEmployee = async (
   next: NextFunction,
 ) => {
   const { id } = req.params;
-  const { firstName, lastName, startingWorkYear, department } = req.body;
+  const { firstName, lastName, startingWorkYear, department, shifts } =
+    req.body;
 
   const updateFields = {} as any;
   if (firstName) {
@@ -57,6 +58,11 @@ const updateEmployee = async (
     updateFields.department = department;
     employeeService.moveEmployeeToNewDepartment(id, department);
   }
+
+  if (shifts) {
+    updateFields.shifts = shifts;
+  }
+
   const updatedEmployee = await Employee.findByIdAndUpdate(id, updateFields, {
     new: true,
   });

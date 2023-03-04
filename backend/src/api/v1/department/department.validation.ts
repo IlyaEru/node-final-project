@@ -1,5 +1,4 @@
 import Joi from 'joi';
-import mongoose from 'mongoose';
 
 const createDepartmentSchema = Joi.object({
   name: Joi.string().min(3).max(40).required(),

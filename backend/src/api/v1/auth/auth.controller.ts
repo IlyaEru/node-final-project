@@ -2,6 +2,9 @@ import { NextFunction, Request, Response } from 'express';
 import { tokenService } from '../../../modules/token';
 import * as authService from './auth.service';
 import { userServices } from '../user';
+import { getUserLeftActions } from '../../../modules/actions/actions.dal';
+import { ApiError } from '../../../modules/error';
+import httpStatus from 'http-status';
 
 const register = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -19,7 +22,12 @@ const login = async (req: Request, res: Response, next: NextFunction) => {
     const { username, email } = req.body;
     const user = await authService.loginWithUsernameAndEmail(username, email);
     const tokens = await tokenService.generateAuthTokens(user.id);
-    res.json({ user, tokens });
+    const userActionsLeft = await getUserLeftActions(user.id);
+
+    if (userActionsLeft <= 0) {
+      return next(new ApiError(httpStatus.FORBIDDEN, 'Max actions reached'));
+    }
+    res.json({ user, tokens, userActionsLeft });
   } catch (error) {
     next(error);
   }
@@ -42,7 +50,9 @@ const refreshTokens = async (
 ) => {
   try {
     const { refreshToken } = req.body;
+
     const { user, tokens } = await authService.refreshAuth(refreshToken);
+
     res.json({ user, tokens });
   } catch (error) {
     next(error);

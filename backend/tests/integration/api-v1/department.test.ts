@@ -39,8 +39,8 @@ describe('Department API', () => {
       expect(resp.body.departments).toBeDefined();
     });
 
-    it('should return 401 without token', async () => {
-      await request(app).get('/api/v1/departments').expect(401);
+    it('should return 403 without token', async () => {
+      await request(app).get('/api/v1/departments').expect(403);
     });
   });
 
@@ -73,11 +73,11 @@ describe('Department API', () => {
       }
     });
 
-    it('should return 401 without token', async () => {
+    it('should return 403 without token', async () => {
       await request(app)
         .post('/api/v1/departments')
         .send(departmentData)
-        .expect(401);
+        .expect(403);
     });
 
     it('should return 400 if name is not provided', async () => {
@@ -199,8 +199,8 @@ describe('Department API', () => {
       );
     });
 
-    it('should return 401 without token', async () => {
-      await request(app).get(`/api/v1/departments/${departmentId}`).expect(401);
+    it('should return 403 without token', async () => {
+      await request(app).get(`/api/v1/departments/${departmentId}`).expect(403);
     });
 
     it('should return 400 if id is not a valid id', async () => {
@@ -246,11 +246,11 @@ describe('Department API', () => {
       expect(resp.body.department.name).toEqual('updated department');
     });
 
-    it('should return 401 without token', async () => {
+    it('should return 403 without token', async () => {
       await request(app)
         .put(`/api/v1/departments/${departmentId}`)
         .send({ name: 'Updated Department' })
-        .expect(401);
+        .expect(403);
     });
 
     it('should return 400 if id is not a valid id', async () => {
@@ -379,10 +379,10 @@ describe('Department API', () => {
         .expect(204);
     });
 
-    it('should return 401 without token', async () => {
+    it('should return 403 without token', async () => {
       await request(app)
         .delete(`/api/v1/departments/${departmentId}`)
-        .expect(401);
+        .expect(403);
     });
 
     it('should return 400 if id is not a valid id', async () => {

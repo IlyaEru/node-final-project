@@ -39,6 +39,7 @@ const logout = async (refreshToken: string): Promise<void> => {
 const refreshAuth = async (refreshToken: string) => {
   try {
     const refreshTokenDocument = await verifyToken(refreshToken, 'refresh');
+
     const user = await getUserById(refreshTokenDocument.user);
     if (!user) {
       throw new ApiError(httpStatus.NOT_FOUND, 'User not found');

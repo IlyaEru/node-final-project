@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 import Department from '../department/department.model';
+import Shift from '../shift/shift.model';
 
 const employeeSchema = new mongoose.Schema(
   {
@@ -27,6 +28,12 @@ const employeeSchema = new mongoose.Schema(
       type: mongoose.Types.ObjectId,
       ref: 'Department',
     },
+    shifts: [
+      {
+        type: mongoose.Types.ObjectId,
+        ref: 'Shift',
+      },
+    ],
   },
   {
     versionKey: false,
@@ -53,10 +60,35 @@ employeeSchema.pre('save', async function (next) {
 
 employeeSchema.pre('deleteOne', async function (next) {
   const removedEmployeeId = this.getQuery();
+
   const employee = await Employee.findById(removedEmployeeId);
   if (!employee) {
     return next();
   }
+  const employeeShifts = await Shift.find({
+    employees: { $in: [employee._id] },
+  });
+
+  if (employeeShifts.length > 0) {
+    for (const employeeShift of employeeShifts) {
+      await Shift.findByIdAndUpdate(employeeShift, {
+        $pull: { employees: employee._id },
+      });
+    }
+  }
+
+  const employeeDepartmentsManager = await Department.find({
+    manager: employee._id,
+  });
+
+  if (employeeDepartmentsManager.length > 0) {
+    for (const employeeDepartmentManager of employeeDepartmentsManager) {
+      await Department.findByIdAndUpdate(employeeDepartmentManager, {
+        manager: null,
+      });
+    }
+  }
+
   if (employee.department) {
     try {
       await Department.findByIdAndUpdate(

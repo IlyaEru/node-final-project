@@ -17,6 +17,11 @@ const updateEmployeeSchema = Joi.object({
   department: Joi.string()
     .regex(/^[0-9a-fA-F]{24}$/)
     .message('Invalid department id'),
+  shifts: Joi.array().items(
+    Joi.string()
+      .regex(/^[0-9a-fA-F]{24}$/)
+      .message('Invalid shift id'),
+  ),
 });
 
 export { createEmployeeSchema, updateEmployeeSchema };

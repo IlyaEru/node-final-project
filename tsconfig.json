@@ -104,6 +104,5 @@
     "skipLibCheck": true                                 /* Skip type checking all .d.ts files. */
   },
   "files": [
-    "backend/src/xss-clean.d.ts"
-  ],
+    "backend/src/xss-clean.d.ts"  ],
 }
