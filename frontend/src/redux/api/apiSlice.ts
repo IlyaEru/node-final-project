@@ -10,7 +10,7 @@ import { setAuth, clearAuth, setActions } from '../features/auth/authSlice';
 import { RootState } from '../store';
 import dayjs from 'dayjs';
 
-const baseUrl = 'http://localhost:3000/api/v1';
+const baseUrl = 'https://node-final-project-production.up.railway.app';
 
 const baseQuery = fetchBaseQuery({
   baseUrl,
