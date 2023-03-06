@@ -10,7 +10,7 @@
     "serverDev": "pnpm  --filter backend run devstart",
     "clientDev": "pnpm  --filter frontend run dev",
     "server": "pnpm  --filter backend run start",
-    "client": "pnpm  --filter frontend run start",
+    "client": "pnpm  --filter frontend run dev",
     "dev": "concurrently \"pnpm run serverDev\" \"pnpm run clientDev\"",
     "start": "concurrently \"pnpm run server\" \"pnpm run client\""
   },
