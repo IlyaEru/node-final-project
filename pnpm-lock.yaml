@@ -135,6 +135,7 @@ importers:
       morgan: 1.10.0
       passport: 0.6.0
       passport-jwt: 4.0.1
+      ts-node: 10.9.1_alpjt73dvgv6kni625hu7f2l4m
       winston: 3.8.2
       xss-clean: 0.1.1
     devDependencies:
@@ -163,7 +164,6 @@ importers:
       nodemon: 2.0.21
       prettier: 2.8.4
       ts-jest: 29.0.5_doipufordlnvh5g4adbwayvyvy
-      ts-node: 10.9.1_alpjt73dvgv6kni625hu7f2l4m
       typescript: 4.9.5
 
   frontend:
