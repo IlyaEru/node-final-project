@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "workspaces": [
+    "packages/*"
+  ],
   "scripts": {
     "serverDev": "pnpm  --filter backend run devstart",
     "clientDev": "pnpm  --filter frontend run dev",
