@@ -1,3 +1,3 @@
-import NewDepartment from './NewDepartment';
+import NewEmployee from './NewEmployee';
 
-export default NewDepartment;
+export default NewEmployee;

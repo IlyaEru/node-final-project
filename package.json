@@ -12,7 +12,9 @@
     "server": "pnpm  --filter backend run start",
     "client": "pnpm  --filter frontend run dev",
     "dev": "concurrently \"pnpm run serverDev\" \"pnpm run clientDev\"",
-    "start": "concurrently \"pnpm run server\" \"pnpm run client\""
+    "start": "concurrently \"pnpm run server\" \"pnpm run client\"",
+    "predeploy": "pnpm  --filter frontend run predeploy",
+    "deploy": "pnpm  --filter frontend run deploy"
   },
   "keywords": [],
   "author": "",
