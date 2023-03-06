@@ -15,6 +15,7 @@ import {
   useGetShiftsQuery,
   useUpdateShiftMutation,
 } from '../../redux/api/shiftApiSlice';
+import { StyledLink, StyledScrollableContainer } from '../../style/globalStyle';
 import { Department } from '../../types/department.type';
 import { Shift } from '../../types/shift.type';
 import {
@@ -79,10 +80,38 @@ export default function EditEmployee() {
   }));
 
   const columns = [
-    { field: 'id', headerName: 'ID', width: 70 },
-    { field: 'date', headerName: 'Date', width: 130 },
-    { field: 'startTime', headerName: 'Start Time', width: 130 },
-    { field: 'endTime', headerName: 'End Time', width: 130 },
+    {
+      field: 'id',
+      headerName: 'ID',
+      flex: 0.5,
+      renderCell: (params: any) => (
+        <StyledScrollableContainer>{params.value}</StyledScrollableContainer>
+      ),
+    },
+    {
+      field: 'date',
+      headerName: 'Date',
+      flex: 1,
+      renderCell: (params: any) => (
+        <StyledScrollableContainer>{params.value}</StyledScrollableContainer>
+      ),
+    },
+    {
+      field: 'startTime',
+      headerName: 'Start Time',
+      flex: 1,
+      renderCell: (params: any) => (
+        <StyledScrollableContainer>{params.value}</StyledScrollableContainer>
+      ),
+    },
+    {
+      field: 'endTime',
+      headerName: 'End Time',
+      flex: 1,
+      renderCell: (params: any) => (
+        <StyledScrollableContainer>{params.value}</StyledScrollableContainer>
+      ),
+    },
   ];
 
   const rows =
@@ -150,7 +179,10 @@ export default function EditEmployee() {
             Employee: {data.employee.firstName} {data.employee.lastName}
           </StyledEditEmployeeFullname>
           <StyledEditEmployeeDepartmentHeader>
-            Department: {employeeDepartmentName}
+            Department:{' '}
+            <StyledLink to={`/departments/${data.employee.department}`}>
+              {employeeDepartmentName}
+            </StyledLink>
           </StyledEditEmployeeDepartmentHeader>
           <StyledEditEmployeeButtonContainer>
             <StyledEditEmployeeEditButton
@@ -185,11 +217,12 @@ export default function EditEmployee() {
           }}
         >
           <DataGrid
-            rows={rows}
             autoHeight={true}
+            rows={rows}
             columns={columns}
             pageSize={5}
             rowsPerPageOptions={[5]}
+            disableSelectionOnClick={true}
           />
         </StyledEditEmployeeShiftsContainer>
       )}

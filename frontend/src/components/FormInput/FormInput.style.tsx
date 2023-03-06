@@ -15,12 +15,12 @@ export const StyledFormInput = styled.input`
   width: 100%;
   padding: 10px;
   border-radius: 4px;
-  border: 1px solid #ccc;
+  border: 1px solid ${({ theme }) => theme.colors.grey};
   transition: border-color 0.2s ease-in-out;
 
   &:focus {
     outline: none;
-    border-color: #61dafb;
+    border-color: ${({ theme }) => theme.colors.primaryBlue};
   }
   &[type='number'] {
     -moz-appearance: textfield;
@@ -32,11 +32,11 @@ export const StyledFormSelect = styled.select`
   width: 100%;
   padding: 10px;
   border-radius: 4px;
-  border: 1px solid #ccc;
+  border: 1px solid ${({ theme }) => theme.colors.grey};
   transition: border-color 0.2s ease-in-out;
   background: transparent;
   &:focus {
     outline: none;
-    border-color: #61dafb;
+    border-color: ${({ theme }) => theme.colors.primaryBlue};
   }
 `;

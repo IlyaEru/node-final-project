@@ -12,6 +12,7 @@ const theme = {
     blueStage2: '#096dd9',
     blueStage3: '#0050b3',
     navbarBlue: '#21333d',
+    cyanBlue: '#61DAFB',
 
     darkRed: '#a80000',
     red: '#ff0000',
@@ -37,12 +38,17 @@ const theme = {
 
     darkWhite: '#B9B9B9',
     white: '#e6e6e6',
+    whiteRock: '#e8e7cd',
     brightWhite: '#fff',
     black: '#000',
+    balticSea: '#282C34',
+    acadia: '#141303',
+    lightAcadia: '#dadbc4',
 
     darkPurple: '#3f007d',
     purple: '#4b145b',
     lightPurple: '#c5b3d9',
+    redPurple: '#8A004E',
 
     darkGold: '#b58900',
     gold: '#c59d5f',
@@ -74,6 +80,7 @@ const theme = {
   borderRadius: '0.25rem',
 
   formMaxWidth: '600px',
+  navBarMaxWidth: '1200px',
   smallMaxWidth: '920px',
   largeMaxWidth: '1200px',
 

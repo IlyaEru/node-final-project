@@ -3,18 +3,24 @@ import {
   StyledDangerButton,
   StyledOutlineButton,
   StyledPrimaryButton,
+  StyledPrimaryTitle,
   StyledSecondaryButton,
+  StyledSecondaryTitle,
 } from '../../style/globalStyle';
 
 export const StyledEditDepartmentContainer = styled.main`
+  max-width: ${({ theme }) => theme.smallMaxWidth};
+  width: 100%;
+  align-self: center;
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding: 1rem;
 `;
 
-export const StyledEditDepartmentTitle = styled.h1``;
+export const StyledEditDepartmentTitle = styled(StyledPrimaryTitle)``;
 
-export const StyledEditDepartmentManager = styled.p``;
+export const StyledEditDepartmentManager = styled(StyledSecondaryTitle)``;
 
 export const StyledEditDepartmentButtonContainer = styled.div`
   display: grid;

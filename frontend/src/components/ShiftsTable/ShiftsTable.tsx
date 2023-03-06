@@ -2,6 +2,7 @@ import { DataGrid } from '@mui/x-data-grid';
 import dayjs from 'dayjs';
 import { useGetEmployeesQuery } from '../../redux/api/employeeApiSlice';
 import { useGetShiftsQuery } from '../../redux/api/shiftApiSlice';
+import { StyledScrollableContainer } from '../../style/globalStyle';
 import { Employee } from '../../types/employee.type';
 import { Shift } from '../../types/shift.type';
 import LoadingSpinner from '../LoadingSpinner';
@@ -27,34 +28,59 @@ export default function ShiftsTable({ handleEditShift }: ShiftsTableProps) {
   };
 
   const columns = [
-    { field: 'id', headerName: 'ID', width: 70 },
+    {
+      field: 'id',
+      headerName: 'ID',
+      flex: 0.5,
+      renderCell: (params: any) => (
+        <StyledScrollableContainer>{params.value}</StyledScrollableContainer>
+      ),
+    },
     {
       field: 'date',
       headerName: 'Date',
-      width: 130,
-      renderCell: (params: any) => dayjs(params.value).format('DD/MM/YYYY'),
+      flex: 1,
+      renderCell: (params: any) => (
+        <StyledScrollableContainer>
+          {dayjs(params.value).format('DD/MM/YYYY')}
+        </StyledScrollableContainer>
+      ),
     },
     {
       field: 'startTime',
       headerName: 'Start time',
-      width: 130,
-      renderCell: (params: any) => dayjs(params.value).format('HH:mm'),
+      flex: 1,
+      renderCell: (params: any) => (
+        <StyledScrollableContainer>
+          {dayjs(params.value).format('HH:mm')}
+        </StyledScrollableContainer>
+      ),
     },
     {
       field: 'endTime',
       headerName: 'End time',
-      width: 130,
-      renderCell: (params: any) => dayjs(params.value).format('HH:mm'),
+      flex: 1,
+      renderCell: (params: any) => (
+        <StyledScrollableContainer>
+          {dayjs(params.value).format('HH:mm')}
+        </StyledScrollableContainer>
+      ),
     },
     {
       field: 'employees',
       headerName: 'Employees',
-      width: 130,
+      flex: 2,
       renderCell: (params: any) => {
         return params.value.length === 0 ? (
-          'No employees'
+          <StyledScrollableContainer>No employees</StyledScrollableContainer>
         ) : (
-          <ul>
+          <ul
+            style={{
+              overflow: 'scroll',
+              height: '100%',
+              width: '100%',
+            }}
+          >
             {params.value.map((employeeName: string, index: number) => (
               <li key={index}>{employeeName}</li>
             ))}
@@ -65,24 +91,25 @@ export default function ShiftsTable({ handleEditShift }: ShiftsTableProps) {
     {
       field: 'edit',
       headerName: 'Edit shift',
-      width: 130,
+      flex: 1,
       renderCell: (params: any) => (
         <StyledEditShiftButton onClick={() => handleEditShift(params.row.id)}>
-          Edit Shift
+          Edit
         </StyledEditShiftButton>
       ),
     },
   ];
 
-  const rows = shiftsData?.shifts?.map((shift: Shift) => ({
-    id: shift._id,
-    date: shift.date,
-    startTime: shift.startTime,
-    endTime: shift.endTime,
-    employees: shift?.employees?.map((employeeId: string) =>
-      getEmployeeName(employeeId),
-    ),
-  }));
+  const rows =
+    shiftsData?.shifts?.map((shift: Shift) => ({
+      id: shift._id,
+      date: shift.date,
+      startTime: shift.startTime,
+      endTime: shift.endTime,
+      employees: shift?.employees?.map((employeeId: string) =>
+        getEmployeeName(employeeId),
+      ),
+    })) || [];
 
   if (isLoadingShifts || isLoadingEmployees) {
     return <LoadingSpinner />;
@@ -90,10 +117,12 @@ export default function ShiftsTable({ handleEditShift }: ShiftsTableProps) {
   return (
     <StyledShiftsTableContainer style={{ height: 400, width: '100%' }}>
       <DataGrid
+        autoHeight={true}
         rows={rows}
         columns={columns}
         pageSize={5}
         rowsPerPageOptions={[5]}
+        disableSelectionOnClick={true}
       />
     </StyledShiftsTableContainer>
   );

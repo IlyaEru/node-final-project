@@ -36,7 +36,10 @@ const moveEmployeesToNewDepartment = async (
         department: departmentId,
       });
     } catch (error: any) {
-      console.log(error);
+      throw new ApiError(
+        httpStatus.INTERNAL_SERVER_ERROR,
+        'Error moving employees to new department',
+      );
     }
   }
 };

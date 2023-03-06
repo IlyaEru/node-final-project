@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import EditDepartmentForm from '../../components/EditDepartmentForm/EditDepartmentForm';
 import FormInput from '../../components/FormInput';
 import LoadingSpinner from '../../components/LoadingSpinner';
@@ -11,6 +11,7 @@ import {
   useUpdateDepartmentMutation,
 } from '../../redux/api/departmentApiSlice';
 import { useGetEmployeesQuery } from '../../redux/api/employeeApiSlice';
+import { StyledLink } from '../../style/globalStyle';
 import { Employee } from '../../types/employee.type';
 import {
   StyledAllocateEmployeeButton,
@@ -114,12 +115,12 @@ export default function EditDepartment() {
           <StyledEditDepartmentManager>
             Manager:{' '}
             {data.department.manager ? (
-              <Link to={`/employees/${data.department.manager}`}>
+              <StyledLink to={`/employees/${data.department.manager}`}>
                 {getEmployeeFullName(
                   data.department.manager,
                   employeesData?.employees || [],
                 )}
-              </Link>
+              </StyledLink>
             ) : (
               'No manager'
             )}
@@ -133,12 +134,12 @@ export default function EditDepartment() {
             <StyledEditDepartmentEmployeesList>
               {data.department.employees.map((employeeId: string) => (
                 <li key={employeeId}>
-                  <Link to={`/employees/${employeeId}`}>
+                  <StyledLink to={`/employees/${employeeId}`}>
                     {getEmployeeFullName(
                       employeeId,
                       employeesData?.employees || [],
                     )}
-                  </Link>
+                  </StyledLink>
                 </li>
               ))}
             </StyledEditDepartmentEmployeesList>

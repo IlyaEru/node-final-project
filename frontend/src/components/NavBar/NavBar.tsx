@@ -1,6 +1,18 @@
-import { NavLink } from 'react-router-dom';
-import { navBarLinks } from './NavBar.constanst';
-import { StyledHamburgerWrapper, StyledNavBarContainer } from './NavBar.style';
+import { navBarLinks, navBarNewLinks } from './NavBar.constanst';
+import {
+  StyledFaQuestionCircle,
+  StyledHamburgerWrapper,
+  StyledLogoutButton,
+  StyledMobileNewLinksContainer,
+  StyledNav,
+  StyledNavBarContainer,
+  StyledNavLink,
+  StyledNavLinkList,
+  StyledNewLinkDropdown,
+  StyledNewLinksButton,
+  StyledUserNameAndActions,
+  StyledUserSection,
+} from './NavBar.style';
 import { useEffect, useRef, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import {
@@ -12,9 +24,9 @@ import { useLogoutMutation } from '../../redux/api/authApiSlice';
 import LoadingSpinner from '../LoadingSpinner';
 import Hamburger from 'hamburger-react';
 import { IconButton, Tooltip } from '@mui/material';
-import { FaQuestionCircle } from 'react-icons/fa';
+import { FaAngleDown, FaQuestionCircle } from 'react-icons/fa';
 
-export default function NavBar() {
+export default function NavBar({ isHome = false }) {
   const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
 
   const [logout, { isLoading }] = useLogoutMutation();
@@ -39,48 +51,89 @@ export default function NavBar() {
 
   const getUserSection = () => {
     return (
-      <>
-        <span className="user-name">{fullName}</span>
-        <span className="user-actions">
-          Actions left: {actions.actionsLeft}
-          <Tooltip title="You have a limited number of actions that you can perform each day. When you reach the maximum number of actions allowed, you will not be able to perform any more actions for the day, and you will be logged out until the following day. ">
-            <IconButton>
-              <FaQuestionCircle color="#61dafb" />
-            </IconButton>
-          </Tooltip>
-        </span>
-        <button className="logout-btn" onClick={handleLogout}>
-          Logout
-        </button>
-      </>
+      <StyledUserSection className={isHome ? 'home-page' : ''}>
+        <StyledUserNameAndActions>
+          <span className="user-name">{fullName}</span>
+          <span className="user-actions">
+            Actions left:{' '}
+            <span className="user-action-value">{actions.actionsLeft}</span>
+            <Tooltip title="You have a limited number of actions that you can perform each day. When you reach the maximum number of actions allowed, you will not be able to perform any more actions for the day, and you will be logged out until the following day. ">
+              <IconButton>
+                <StyledFaQuestionCircle />
+              </IconButton>
+            </Tooltip>
+          </span>
+        </StyledUserNameAndActions>
+        <StyledLogoutButton
+          className={isHome ? 'home-page' : ''}
+          onClick={handleLogout}
+        >
+          Log out
+        </StyledLogoutButton>
+      </StyledUserSection>
     );
   };
 
   return (
     <StyledNavBarContainer>
-      <nav>
-        <NavLink className="home-link" to="/">
-          Home
-        </NavLink>
-        <ul ref={navbarRef} className={isMobileNavOpen ? 'open' : ''}>
+      <StyledNav>
+        <StyledNavLink
+          onClick={() => setIsMobileNavOpen(false)}
+          className={isHome ? 'home home-page' : 'home'}
+          to="/"
+        >
+          <div>Home</div>
+        </StyledNavLink>
+        <StyledNavLinkList
+          ref={navbarRef}
+          className={isMobileNavOpen ? 'open' : ''}
+        >
           {navBarLinks.map((link, index) => (
             <li key={index} onClick={() => setIsMobileNavOpen(false)}>
-              <NavLink to={link.path} end>
+              <StyledNavLink
+                onClick={() => setIsMobileNavOpen(false)}
+                className={isHome ? 'home-page' : ''}
+                to={link.path}
+                end
+              >
                 {link.label}
-              </NavLink>
+              </StyledNavLink>
             </li>
           ))}
-        </ul>
+          <StyledMobileNewLinksContainer>
+            {navBarNewLinks.map((link, index) => (
+              <StyledNavLink
+                onClick={() => setIsMobileNavOpen(false)}
+                key={index}
+                to={link.path}
+                end
+              >
+                {link.label}
+              </StyledNavLink>
+            ))}
+          </StyledMobileNewLinksContainer>
+          <StyledNewLinksButton className={isHome ? 'home-page' : ''}>
+            new <FaAngleDown />
+            <StyledNewLinkDropdown className="links-dropdown">
+              {navBarNewLinks.map((link, index) => (
+                <StyledNavLink key={index} to={link.path} end>
+                  {link.label}
+                </StyledNavLink>
+              ))}
+            </StyledNewLinkDropdown>
+          </StyledNewLinksButton>
+        </StyledNavLinkList>
         {fullName && getUserSection()}
 
         <StyledHamburgerWrapper className="hamburger">
           <Hamburger
-            color="#61dafb"
+            color={isHome ? '#e8e7cd' : '#282C34'}
+            size={30}
             toggled={isMobileNavOpen}
             toggle={setIsMobileNavOpen}
           />
         </StyledHamburgerWrapper>
-      </nav>
+      </StyledNav>
       {isLoading && <LoadingSpinner />}
     </StyledNavBarContainer>
   );

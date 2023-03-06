@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import styled, { createGlobalStyle } from 'styled-components';
 
 interface Props {
@@ -31,7 +32,7 @@ h4 {
   margin-bottom: 0.75rem;
 }
 body{
-  background-color: ${({ theme }) => theme.colors.lightGrey};
+  background-color: ${({ theme }) => theme.colors.whiteRock};
 }
 #root {
   display: flex;
@@ -41,6 +42,19 @@ body{
 ul {
   list-style-type: none;
 }
+`;
+
+export const StyledPrimaryTitle = styled.h1`
+  font-size: 2.5rem;
+  color: ${({ theme }) => theme.colors.redPurple};
+  margin-bottom: 1rem;
+  font-family: 'Poppins', sans-serif;
+`;
+
+export const StyledSecondaryTitle = styled.h2`
+  font-size: 2rem;
+  color: ${({ theme }) => theme.colors.blueGrey};
+  margin-bottom: 1rem;
 `;
 
 export const StyledPrimaryButton = styled.button`
@@ -101,4 +115,18 @@ export const StyledDangerButton = styled.button`
   &:hover {
     background-color: #bd2130;
   }
+`;
+
+export const StyledLink = styled(Link)`
+  color: ${({ theme }) => theme.colors.darkPurple};
+  text-decoration: none;
+  transition: color 0.3s;
+  text-transform: capitalize;
+  &:hover {
+    color: ${({ theme }) => theme.colors.redPurple};
+  }
+`;
+
+export const StyledScrollableContainer = styled.div`
+  overflow: scroll;
 `;

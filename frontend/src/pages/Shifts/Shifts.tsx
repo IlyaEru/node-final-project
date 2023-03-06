@@ -56,8 +56,6 @@ export default function Shifts() {
           handleNewShiftCancel={() => setIsCreatingNewShift(false)}
         />
       )}
-
-      {/* TODO: change existing shifts,*/}
     </StyledShiftsContainer>
   );
 }

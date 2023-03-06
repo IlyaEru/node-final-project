@@ -10,13 +10,13 @@ import {
 } from './Employees.style';
 import { DataGrid, GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
 import { Employee } from '../../types/employee.type';
-import { Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { Department } from '../../types/department.type';
 import FormInput from '../../components/FormInput';
 import { useGetShiftsQuery } from '../../redux/api/shiftApiSlice';
 import { Shift } from '../../types/shift.type';
 import dayjs from 'dayjs';
+import { StyledLink, StyledScrollableContainer } from '../../style/globalStyle';
 
 export default function Employees() {
   const { data: employeesData, isLoading: isLoadingEmployees } =
@@ -68,9 +68,10 @@ export default function Employees() {
   };
 
   const getEmployeeShifts = (employeeId: string) => {
-    const employeesShifts = shiftsData.shifts.filter((shift: any) =>
-      shift.employees.includes(employeeId),
-    );
+    const employeesShifts =
+      shiftsData?.shifts?.filter((shift: any) =>
+        shift.employees.includes(employeeId),
+      ) || [];
     if (employeesShifts.length === 0) {
       return 'No shifts';
     }
@@ -82,37 +83,57 @@ export default function Employees() {
   };
 
   const columns = [
-    { field: 'id', headerName: 'ID', width: 70 },
+    {
+      field: 'id',
+      headerName: 'ID',
+      flex: 0.5,
+      renderCell: (params: any) => (
+        <StyledScrollableContainer>{params.value}</StyledScrollableContainer>
+      ),
+    },
     {
       field: 'fullname',
       headerName: 'Full name',
-      width: 130,
+      flex: 1,
       renderCell: (params: any) => (
-        <Link to={`/employees/${params.row.id}`}>{params.value}</Link>
+        <StyledScrollableContainer>
+          <StyledLink to={`/employees/${params.row.id}`}>
+            {params.value}
+          </StyledLink>
+        </StyledScrollableContainer>
       ),
     },
 
     {
       field: 'department',
       headerName: 'Department',
-      width: 130,
+      flex: 1,
       renderCell: (params: any) => {
         if (params.value === 'No department') {
           return <p>{params.value}</p>;
         } else {
           return (
-            <Link to={`/departments/${params.value.id}`}>
-              {params.value.name}
-            </Link>
+            <StyledScrollableContainer>
+              <StyledLink to={`/departments/${params.value.id}`}>
+                {params.value.name}
+              </StyledLink>
+            </StyledScrollableContainer>
           );
         }
       },
     },
-    { field: 'startingWorkYear', headerName: 'Starting work year', width: 130 },
+    {
+      field: 'startingWorkYear',
+      headerName: 'Starting work year',
+      flex: 1,
+      renderCell: (params: any) => (
+        <StyledScrollableContainer>{params.value}</StyledScrollableContainer>
+      ),
+    },
     {
       field: 'shifts',
       headerName: 'Shifts',
-      width: 300,
+      flex: 2,
       renderCell: (params: any) => {
         if (params.value === 'No shifts') {
           return <p>{params.value}</p>;
@@ -135,7 +156,7 @@ export default function Employees() {
   ];
 
   const rows =
-    filteredEmployees.map((employee: Employee) => ({
+    filteredEmployees?.map((employee: Employee) => ({
       id: employee._id,
       fullname: `${employee.firstName} ${employee.lastName}`,
       department: {
@@ -176,13 +197,14 @@ export default function Employees() {
           columns={columns}
           pageSize={5}
           rowsPerPageOptions={[5]}
+          disableSelectionOnClick={true}
         />
       </StyledEmployeesTableContainer>
-      <Link to="/employees/new">
+      <StyledLink to="/employees/new">
         <StyledEmployeesNewEmployeeButton>
           New employee
         </StyledEmployeesNewEmployeeButton>
-      </Link>
+      </StyledLink>
     </StyledEmployeesContainer>
   );
 }

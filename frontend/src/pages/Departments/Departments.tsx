@@ -1,8 +1,8 @@
 import { DataGrid } from '@mui/x-data-grid';
-import { Link } from 'react-router-dom';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import { useGetDepartmentsQuery } from '../../redux/api/departmentApiSlice';
 import { useGetEmployeesQuery } from '../../redux/api/employeeApiSlice';
+import { StyledScrollableContainer, StyledLink } from '../../style/globalStyle';
 import { Department } from '../../types/department.type';
 import { Employee } from '../../types/employee.type';
 import {
@@ -23,34 +23,52 @@ export default function Departments() {
   }
 
   const getEmployeeFullName = (employeeId: string) => {
-    const employee = employeesData?.employees.find(
+    const employee = employeesData?.employees?.find(
       (employee: Employee) => employee._id === employeeId,
     );
+    if (!employee) {
+      return 'Unavailable';
+    }
     return `${employee?.firstName} ${employee?.lastName}`;
   };
 
   const columns = [
-    { field: 'id', headerName: 'ID', width: 70 },
+    {
+      field: 'id',
+      headerName: 'ID',
+      flex: 0.5,
+      renderCell: (params: any) => (
+        <StyledScrollableContainer>{params.value}</StyledScrollableContainer>
+      ),
+    },
     {
       field: 'name',
       headerName: 'Name',
-      width: 200,
+      flex: 1,
       renderCell: (params: any) => (
-        <Link to={`/departments/${params.row.id}`}>{params.value}</Link>
+        <StyledScrollableContainer>
+          <StyledLink to={`/departments/${params.row.id}`}>
+            {params.value}
+          </StyledLink>
+        </StyledScrollableContainer>
       ),
     },
     {
       field: 'manager',
       headerName: 'Manager',
-      width: 130,
+      flex: 1,
       renderCell: (params: any) => {
         if (!params.value) {
-          return 'No manager';
+          return (
+            <StyledScrollableContainer>No manager</StyledScrollableContainer>
+          );
         } else {
           return (
-            <Link to={`/employees/${params.value}`}>
-              {getEmployeeFullName(params.value)}
-            </Link>
+            <StyledScrollableContainer>
+              <StyledLink to={`/employees/${params.value}`}>
+                {getEmployeeFullName(params.value)}
+              </StyledLink>
+            </StyledScrollableContainer>
           );
         }
       },
@@ -59,21 +77,27 @@ export default function Departments() {
     {
       field: 'employees',
       headerName: 'Employees',
-      width: 200,
+      flex: 1,
       renderCell: (params: any) => {
         if (params.value.length === 0) {
-          return 'No employees';
+          return (
+            <StyledScrollableContainer>
+              'No employees'
+            </StyledScrollableContainer>
+          );
         } else {
           return (
-            <ul>
-              {params.value.map((employeeId: string) => (
-                <li key={employeeId}>
-                  <Link to={`/employees/${employeeId}`}>
-                    {getEmployeeFullName(employeeId)}
-                  </Link>
-                </li>
-              ))}
-            </ul>
+            <StyledScrollableContainer>
+              <ul>
+                {params.value.map((employeeId: string) => (
+                  <li key={employeeId}>
+                    <StyledLink to={`/employees/${employeeId}`}>
+                      {getEmployeeFullName(employeeId)}
+                    </StyledLink>
+                  </li>
+                ))}
+              </ul>
+            </StyledScrollableContainer>
           );
         }
       },
@@ -81,7 +105,7 @@ export default function Departments() {
   ];
 
   const rows =
-    departmentsData?.departments.map((department: Department) => ({
+    departmentsData?.departments?.map((department: Department) => ({
       id: department._id,
       name: department.name,
       manager: department.manager,
@@ -91,19 +115,21 @@ export default function Departments() {
   return (
     <StyledDepartmentsContainer>
       <StyledDepartmentsTitle>Departments</StyledDepartmentsTitle>
-      <StyledDepartmentsTableContainer style={{ height: 400, width: '100%' }}>
+      <StyledDepartmentsTableContainer style={{ width: '100%' }}>
         <DataGrid
+          autoHeight={true}
           rows={rows}
           columns={columns}
           pageSize={5}
           rowsPerPageOptions={[5]}
+          disableSelectionOnClick={true}
         />
       </StyledDepartmentsTableContainer>
-      <Link to="/departments/new">
+      <StyledLink to="/departments/new">
         <StyledDepartmentsNewDepartmentButton>
           New department
         </StyledDepartmentsNewDepartmentButton>
-      </Link>
+      </StyledLink>
     </StyledDepartmentsContainer>
   );
 }

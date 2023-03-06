@@ -81,8 +81,6 @@ export default function EditDepartmentForm({
     try {
       const updatedEmployee = await updateDepartment(updatePayload).unwrap();
 
-      console.log(updatedEmployee.department.name);
-
       if (
         updatedEmployee.department.name &&
         updatedEmployee.department.name === name

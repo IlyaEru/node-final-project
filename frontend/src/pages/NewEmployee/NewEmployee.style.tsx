@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import {
   StyledPrimaryButton,
+  StyledPrimaryTitle,
   StyledSecondaryButton,
 } from '../../style/globalStyle';
 
@@ -11,12 +12,7 @@ export const StyledNewEmployeeContainer = styled.main`
   margin: 1rem;
 `;
 
-export const StyledNewEmployeeTitle = styled.h1`
-  font-size: 24px;
-  font-weight: 600;
-  margin-bottom: 20px;
-  text-align: center;
-`;
+export const StyledNewEmployeeTitle = styled(StyledPrimaryTitle)``;
 
 export const StyledFormContainer = styled.form`
   position: relative;

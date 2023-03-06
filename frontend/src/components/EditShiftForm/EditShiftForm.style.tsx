@@ -2,6 +2,8 @@ import styled from 'styled-components';
 import {
   StyledOutlineButton,
   StyledPrimaryButton,
+  StyledSecondaryButton,
+  StyledSecondaryTitle,
 } from '../../style/globalStyle';
 
 export const StyledEditShiftForm = styled.form`
@@ -19,9 +21,7 @@ export const StyledEditShiftForm = styled.form`
   background-color: #fff;
 `;
 
-export const StyledEditShiftFormHeader = styled.h2``;
-
-export const StyledEditShiftFormEmployeesHeader = styled.h2``;
+export const StyledEditShiftFormHeader = styled(StyledSecondaryTitle)``;
 
 export const StyledNoEmployeesMessage = styled.p``;
 
@@ -36,6 +36,6 @@ export const StyledEditShiftFormButtonContainer = styled.div`
   width: 100%;
 `;
 
-export const StyledEditShiftFormCancelButton = styled(StyledOutlineButton)``;
+export const StyledEditShiftFormCancelButton = styled(StyledSecondaryButton)``;
 
 export const StyledEditShiftFormSubmitButton = styled(StyledPrimaryButton)``;

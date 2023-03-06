@@ -1,4 +1,3 @@
-import { Link } from 'react-router-dom';
 import { Employee } from '../../types/employee.type';
 import {
   StyledRemoveEmployeeButton,
@@ -8,6 +7,7 @@ import {
 } from './ShiftEmployeesList.style';
 import { MdPersonRemove } from 'react-icons/md';
 import { Tooltip } from '@mui/material';
+import { StyledLink } from '../../style/globalStyle';
 
 interface ShiftEmployeesListProps {
   employees: string[];
@@ -34,9 +34,9 @@ export default function ShiftEmployeesList({
       </StyledShiftEmployeesNumber>
       {employees.map((employeeId) => (
         <StyledShiftEmployeesListItem key={employeeId}>
-          <Link key={employeeId} to={`/employees/${employeeId}`}>
+          <StyledLink key={employeeId} to={`/employees/${employeeId}`}>
             {getEmployeeName(employeeId)}
-          </Link>
+          </StyledLink>
           <Tooltip title="Remove employee">
             <StyledRemoveEmployeeButton>
               <MdPersonRemove

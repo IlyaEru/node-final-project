@@ -4,6 +4,7 @@ import FormInput from '../FormInput';
 import {
   StyledAddEmployeeButton,
   StyledAddEmployeeHeader,
+  StyledDifferentDateButton,
   StyledNewShiftForm,
   StyledNewShiftFormEmployeesHeader,
   StyledNewShiftFormHeader,
@@ -131,7 +132,7 @@ export default function NewShiftForm({
         <StyledNewShiftFormHeader>New Shift</StyledNewShiftFormHeader>
         {date && 'Shift date - ' + dayjs(date).format('DD/MM/YYYY')}
         {date && (
-          <button
+          <StyledDifferentDateButton
             type="button"
             onClick={() => {
               setDate(null);
@@ -140,7 +141,7 @@ export default function NewShiftForm({
             }}
           >
             Choose different date
-          </button>
+          </StyledDifferentDateButton>
         )}
         <h2>{date ? 'Choose Shift time' : 'Choose Shift Date'}</h2>
         {!date && (

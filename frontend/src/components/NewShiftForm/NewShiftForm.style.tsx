@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import {
   StyledOutlineButton,
   StyledPrimaryButton,
+  StyledSecondaryTitle,
 } from '../../style/globalStyle';
 
 export const StyledNewShiftForm = styled.form`
@@ -19,9 +20,14 @@ export const StyledNewShiftForm = styled.form`
   background-color: #fff;
 `;
 
-export const StyledNewShiftFormHeader = styled.h2``;
+export const StyledNewShiftFormHeader = styled(StyledSecondaryTitle)``;
 
-export const StyledNewShiftFormEmployeesHeader = styled.h2``;
+export const StyledDifferentDateButton = styled(StyledOutlineButton)``;
+
+export const StyledNewShiftFormEmployeesHeader = styled.h2`
+  margin-top: 1rem;
+  margin-bottom: 0;
+`;
 
 export const StyledNoEmployeesMessage = styled.p``;
 

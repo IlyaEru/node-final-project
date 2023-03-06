@@ -16,6 +16,10 @@ import { Employee } from '../../types/employee.type';
 import ErrorList from '../ErrorList';
 import FormInput from '../FormInput';
 import LoadingSpinner from '../LoadingSpinner';
+import {
+  StyledDifferentDateButton,
+  StyledNewShiftFormEmployeesHeader,
+} from '../NewShiftForm/NewShiftForm.style';
 import { validateNewShift } from '../NewShiftForm/NewShiftForm.validation';
 import ShiftEmployeesList from '../ShiftEmployeesList';
 import {
@@ -24,7 +28,6 @@ import {
   StyledEditShiftForm,
   StyledEditShiftFormButtonContainer,
   StyledEditShiftFormCancelButton,
-  StyledEditShiftFormEmployeesHeader,
   StyledEditShiftFormHeader,
   StyledEditShiftFormSubmitButton,
   StyledNoEmployeesMessage,
@@ -162,7 +165,7 @@ export default function EditShiftForm({
         <StyledEditShiftFormHeader>Edit Shift</StyledEditShiftFormHeader>
         {date && 'Shift date - ' + dayjs(date).format('DD/MM/YYYY')}
         {date && (
-          <button
+          <StyledDifferentDateButton
             type="button"
             onClick={() => {
               setDate(null);
@@ -171,7 +174,7 @@ export default function EditShiftForm({
             }}
           >
             Choose different date
-          </button>
+          </StyledDifferentDateButton>
         )}
         <h2>{date ? 'Choose Shift time' : 'Choose Shift Date'}</h2>
         {!date && (
@@ -199,9 +202,9 @@ export default function EditShiftForm({
             />
           </>
         )}
-        <StyledEditShiftFormEmployeesHeader>
+        <StyledNewShiftFormEmployeesHeader>
           Employees in this shift
-        </StyledEditShiftFormEmployeesHeader>
+        </StyledNewShiftFormEmployeesHeader>
         {shiftEmployees.length === 0 ? (
           <StyledNoEmployeesMessage>
             No employees in this shift

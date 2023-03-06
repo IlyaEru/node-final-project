@@ -4,6 +4,7 @@ import LoadingSpinner from '../../components/LoadingSpinner';
 import { useGetAllUserActionsQuery } from '../../redux/api/actionsApiSlice';
 import { api } from '../../redux/api/apiSlice';
 import { useAppDispatch } from '../../redux/hooks';
+import { StyledScrollableContainer } from '../../style/globalStyle';
 import { allUserActionsDataItem } from '../../types/allUserActions.type';
 import {
   StyledUsersContainer,
@@ -25,10 +26,17 @@ export default function Users() {
   }, [allUserActions]);
 
   const columns = [
-    { field: 'id', headerName: 'ID', width: 70 },
-    { field: 'name', headerName: 'Name', width: 200 },
-    { field: 'maxActions', headerName: 'Max Actions', width: 200 },
-    { field: 'currentActions', headerName: 'Current Actions', width: 200 },
+    {
+      field: 'id',
+      headerName: 'ID',
+      flex: 0.5,
+      renderCell: (params: any) => (
+        <StyledScrollableContainer>{params.value}</StyledScrollableContainer>
+      ),
+    },
+    { field: 'name', headerName: 'Name', flex: 1 },
+    { field: 'maxActions', headerName: 'Max Actions', flex: 1 },
+    { field: 'currentActions', headerName: 'Current Actions', flex: 1 },
   ];
 
   const rows =
@@ -51,6 +59,7 @@ export default function Users() {
           columns={columns}
           pageSize={5}
           rowsPerPageOptions={[5]}
+          disableSelectionOnClick={true}
         />
       </StyledUsersTableContainer>
     </StyledUsersContainer>
