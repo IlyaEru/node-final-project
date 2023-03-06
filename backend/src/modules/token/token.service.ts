@@ -94,8 +94,6 @@ const verifyToken = async (token: string, type: 'access' | 'refresh') => {
     throw new Error(validationResults.error.message);
   }
 
-  console.log({ token, type });
-
   const payload = jwt.verify(
     token,
     type === 'access' ? accessSecret : refreshSecret,
