@@ -2,11 +2,14 @@
 
 This is a web application for managing a factory's employees, departments, and shifts.
 
-[Live Preview](ilyaeru.github.io/node-final-project/)
 
 ## Description
 
 The purpose of the web site is to provide a management system for a factory. It allows registered users to log in and perform various actions, such as creating and editing employees and departments, creating and allocating shifts, and viewing user data. The site uses Node.JS and MongoDB on the server side, and React with Redux on the front-end. The site also implements JWT-based authentication to ensure only registered users can access the system, and tracks user actions to enforce a maximum number of actions per day.
+
+
+https://user-images.githubusercontent.com/95101177/223373020-d6f5dc7c-7e68-4063-b47d-faf369128da0.mp4
+
 
 ## Built With
 
