@@ -18,7 +18,7 @@ const decryptToken = (token: string) => {
 
 const getUsersActionsLeft = async (userId: string) => {
   const { data } = await axios.get(
-    `http://localhost:3000/api/v1/actions/${userId}`,
+    `https://node-final-project-production.up.railway.app/api/v1/actions/${userId}`,
   );
 
   return data;
