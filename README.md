@@ -2,7 +2,7 @@
 
 This is a web application for managing a factory's employees, departments, and shifts.
 
-### [Live Preview](ilyaeru.github.io/node-final-project/)
+### [Live Preview](https://ilyaeru.github.io/node-final-project/)
 
 https://user-images.githubusercontent.com/95101177/223373020-d6f5dc7c-7e68-4063-b47d-faf369128da0.mp4
 
